@@ -37,11 +37,21 @@ try_powerpoint_win() {
 
 try_powerpoint_mac() {
   command -v osascript >/dev/null 2>&1 || return 1
-  osascript -e "tell application \"Microsoft PowerPoint\"
-      open POSIX file \"$(cd "$(dirname "$PPTX")" && pwd)/$(basename "$PPTX")\"
-      save active presentation in POSIX file \"$PDF\" as save as PDF
-      close active presentation saving no
-    end tell" >/dev/null 2>&1 || return 1
+  # AppleScript の POSIX file は相対パスを解決できないので、両方とも絶対パスに直す。
+  local ABS_PPTX ABS_PDF
+  ABS_PPTX="$(cd "$(dirname "$PPTX")" && pwd)/$(basename "$PPTX")"
+  ABS_PDF="$(cd "$(dirname "$PDF")" && pwd)/$(basename "$PDF")"
+  # 既定の AppleEvent タイムアウトは 120 秒。10 枚を超えると書き出しが間に合わず
+  # -1712 で落ち、実際には変換できるのに 4 段目（変換不可）へ落ちる。
+  osascript <<APPLESCRIPT >/dev/null 2>&1 || return 1
+with timeout of 900 seconds
+  tell application "Microsoft PowerPoint"
+    open POSIX file "$ABS_PPTX"
+    save active presentation in POSIX file "$ABS_PDF" as save as PDF
+    close active presentation saving no
+  end tell
+end timeout
+APPLESCRIPT
   [ -f "$PDF" ] && TIER="1: ローカル PowerPoint（完全一致）"
 }
 

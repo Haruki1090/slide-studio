@@ -5,6 +5,12 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-12
+
+### Changed
+
+- `SKILL.md` の description から、公開リポジトリには含まれない別スキル名への言及を外した
+
 ## [0.1.0] - 2026-09-12
 
 初回公開。
@@ -23,5 +29,6 @@
 - `agents/reviewer.md` — 初見レビュー用サブエージェントへの指示（レイアウト検査と内容検算を分離）
 - `evals/` — スモークテストと 3 本の評価シナリオ
 
-[Unreleased]: https://github.com/Haruki1090/slide-studio/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Haruki1090/slide-studio/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Haruki1090/slide-studio/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Haruki1090/slide-studio/releases/tag/v0.1.0

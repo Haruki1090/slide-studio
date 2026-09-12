@@ -30,7 +30,7 @@ YOUGEN_TAIL = set("るたういくすつぬぶむぐずじきしちにびみり�
 
 HDR_GROUPS = ("hdr-title", "hdr-head", "footer")
 CHART_PREFIXES = ("bars-", "hbars-", "stairs-", "tl-")
-# ボディ下端からの未使用高さ（インチ）。5.15in のボディに対して 0.8 は 16%、1.5 は 29%
+# ボディ下端からの未使用高さ（インチ）。5.08in のボディに対して 0.8 は 16%、1.5 は 30%
 UNUSED_WARN, UNUSED_ERR = 0.8, 1.5
 # 図に添える解釈テキストの最低文字数（ペイン・カード・所見・KPI ラベルの合計）
 INTERP_MIN_CHARS = 40

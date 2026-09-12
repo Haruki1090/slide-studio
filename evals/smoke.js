@@ -106,7 +106,7 @@ require("fs").mkdirSync(outdir, { recursive: true });
         { label: "2027", caption: "ドーム", note: "予定", ratio: 0.85, plan: true },
       ],
     });
-    const b = s.regions("two", { y: r.bottom.y, bottom: r.bottom.bottom, split: 0.58 });
+    const b = s.regions("two", { ...r.bottom, split: 0.58 });   // 親の矩形をそのまま渡す
     s.pane({
       ...b.left,
       items: [
@@ -152,7 +152,7 @@ require("fs").mkdirSync(outdir, { recursive: true });
         { date: "2027/01", title: "ドーム公演", note: "予定", future: true, side: "down" },
       ],
     });
-    const b = s.regions("two", { y: r.bottom.y, bottom: r.bottom.bottom });
+    const b = s.regions("two", r.bottom);
     s.kpis({ x: b.left.x, y: b.left.y, w: b.left.w, h: b.left.h,
       kpis: [{ value: "13.2 万人", label: "2026/06 の動員。4 件のうち最大" }, { value: "2 件", label: "未実施の予定。実績値は無い" }] });
     s.pane({ ...b.right, items: [

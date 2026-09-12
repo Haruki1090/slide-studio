@@ -39,16 +39,36 @@ def ratio(a, b):
     return (hi + 0.05) / (lo + 0.05)
 
 
+def used_fills(t):
+    """manifest.json なら、実際に塗りに使った色役割の集合を返す。テーマ JSON なら None。"""
+    if "slides" not in t:
+        return None
+    fills = {"paper"}
+    for sl in t["slides"]:
+        for it in sl.get("items", []):
+            if it.get("kind") == "rect" and it.get("fill"):
+                fills.add(it["fill"])
+    if t.get("palette", {}).get("coverBg"):
+        fills.add("coverBg")
+    return fills
+
+
 def check(path):
     t = json.load(open(path, encoding="utf-8"))
     p = t["palette"]
-    print(f"\n{path}  theme={t.get('name')}  ({t.get('label','')})")
+    fills = used_fills(t)
+    label = f"theme={t.get('theme') or t.get('name')}" + (f"  brand={t['brand']}" if t.get("brand") else f"  ({t.get('label','')})")
+    print(f"\n{path}  {label}")
     fails = 0
     for fg, bg, need, why in PAIRS:
         if fg not in p or bg not in p:
             continue
         r = ratio(p[fg], p[bg])
         ok = r >= need
+        if not ok and fills is not None and bg not in fills:
+            # 面として一度も塗っていない組は、規約どおり線と文字に限定できている
+            print(f"  skip {fg:14s} on {bg:14s} {r:5.2f} (要 {need})  {why} — この面は未使用")
+            continue
         print(f"  {'ok  ' if ok else 'FAIL'} {fg:14s} on {bg:14s} {r:5.2f} (要 {need})  {why}")
         if not ok:
             fails += 1

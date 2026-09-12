@@ -1,6 +1,6 @@
 {
   "name": "slide-studio",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Claude Code skill: research-to-deck pipeline that produces pptx / pdf with quality gates (headline-as-conclusion, one message per slide, sources on every page).",
   "private": true,
   "license": "MIT",

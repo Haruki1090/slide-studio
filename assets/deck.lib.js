@@ -233,9 +233,12 @@ class Slide {
    * o.note  : true なら下端に脚注 1 行ぶん（0.45in）を空ける
    * o.split : 主領域の比率（chart-pane の既定 0.58、top-bottom の既定 0.45）
    * o.gap   : 領域間の間隔（既定 0.5）
+   * o.y / o.bottom / o.x / o.w : 入れ子にするとき。親の矩形をそのまま渡せる（regions("two", r.chart)）
    * ------------------------------------------------------------------------ */
   regions(preset = "full", o = {}) {
-    const G = this.G, M = G.margin, W = G.slideW - M * 2;
+    const G = this.G;
+    const M = o.x === undefined ? G.margin : o.x;
+    const W = o.w === undefined ? G.slideW - G.margin * 2 : o.w;
     const gap = o.gap === undefined ? 0.5 : o.gap;
     const y = o.y === undefined ? G.bodyTop : o.y;
     const bottom = (o.bottom === undefined ? G.bodyBottom : o.bottom) - (o.note ? 0.45 : 0);
@@ -369,7 +372,7 @@ class Slide {
     const plotX = x + axisW, plotW = w - axisW;
     const base = y + h - labelH - 0.08;
     const plotH = base - (y + headroom);
-    const ticks = o.ticks || 4;
+    const ticks = o.ticks || pickTicks(max);
 
     for (let i = 0; i <= ticks; i++) {
       const v = (max / ticks) * i;
@@ -452,9 +455,10 @@ class Slide {
         fill: plan ? null : (acc ? "secondary" : "pale"),
         stroke: plan ? tone : (acc ? "secondary" : "rule"),
         strokeW: plan ? 1.25 : 0.75, dash: plan ? "dash" : undefined, group: g });
+      // plan（白抜き）の上に inverse を置くと白地に白文字で消える。塗りがあるときだけ inverse
       this.text(st.caption, { x: bx + 0.08, y: base - bh + 0.12, w: bw - 0.16, h: 0.7,
         size: "small", bold: true, align: "center", lineSpacing: 1.05, group: g,
-        color: acc ? "inverse" : "primary" });
+        color: acc && !plan ? "inverse" : (acc ? "secondary" : "primary") });
       this.text(st.label, { x: bx, y: base + 0.1, w: bw, h: 0.26, size: "cardTitle", bold: true,
         align: "center", mono: true, color: tone, group: g, noWrapCheck: true });
       if (st.note) {
@@ -661,6 +665,17 @@ function fmtNum(v, decimals) {
   return Number.isInteger(v) ? v.toLocaleString() : String(v);
 }
 
+/** 目盛りの本数。刻みが 1・2・2.5・5 × 10^n になる本数を選ぶ（666.67 のような目盛りを出さない）。 */
+function pickTicks(max) {
+  const nice = (step) => {
+    if (step <= 0) return false;
+    const m = step / Math.pow(10, Math.floor(Math.log10(step)));
+    return [1, 2, 2.5, 5].some((k) => Math.abs(m - k) < 1e-9);
+  };
+  for (const t of [4, 5, 3, 2, 6]) if (nice(max / t)) return t;
+  return 4;
+}
+
 function niceMax(v) {
   if (v <= 0) return 1;
   const mag = Math.pow(10, Math.floor(Math.log10(v)));
@@ -741,4 +756,4 @@ function deepMerge(a, b) {
   return a;
 }
 
-module.exports = { Deck, Slide, textWidthIn, estLines, textHeight, isFullWidth, niceMax, applyBrand, loadTheme, tint };
+module.exports = { Deck, Slide, textWidthIn, estLines, textHeight, isFullWidth, niceMax, pickTicks, applyBrand, loadTheme, tint };

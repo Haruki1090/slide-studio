@@ -5,6 +5,18 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-13
+
+v0.2.0 を実案件（企業調査 13 枚）で再テストして見つかった不具合の修正。
+
+### Fixed
+
+- **2 行のヘッドメッセージが枠に入らなかった**（18pt × 2 行 = 0.78in に対し `headH` 0.72）。default / mono / navy の `headH` を 0.80、`headRuleY` 1.42、`bodyTop` 1.62 に。ボディは 12.23 × 5.08in
+- `regions()` の入れ子が列の中で効かなかった（`x` / `w` を引き継がず全幅になり、隣のペインと重なった）。`x` / `w` を受け付け、親の矩形をそのまま渡せる
+- `stairs()` の `plan` ＋ `accent` で白抜きの上に白文字を置いて見えなくなっていた。塗りがあるときだけ `inverse`
+- `bars()` の目盛りが 666.67 のような端数になることがあった。刻みが 1・2・2.5・5 × 10^n になる本数を自動で選ぶ（`pickTicks`）
+- `check_contrast.py` に manifest を渡したとき、一度も塗っていない面（`secondaryPale` 等）まで FAIL にしていた。未使用の面は skip として報告する
+
 ## [0.2.0] - 2026-09-13
 
 実案件（企業調査 13 枚）で「表紙が黒い・企業カラーを使わない・色が多い」「余剰な空白」
@@ -58,7 +70,8 @@
 - `agents/reviewer.md` — 初見レビュー用サブエージェントへの指示（レイアウト検査と内容検算を分離）
 - `evals/` — スモークテストと 3 本の評価シナリオ
 
-[Unreleased]: https://github.com/Haruki1090/slide-studio/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Haruki1090/slide-studio/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/Haruki1090/slide-studio/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Haruki1090/slide-studio/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/Haruki1090/slide-studio/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Haruki1090/slide-studio/releases/tag/v0.1.0

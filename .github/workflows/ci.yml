@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  smoke:
+    name: smoke (${{ matrix.theme }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        theme: [default, mono, navy, editorial]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm ci
+      - name: contrast check
+        run: python3 scripts/check_contrast.py assets/themes/${{ matrix.theme }}.json
+      - name: generate smoke deck
+        run: node evals/smoke.js ${{ matrix.theme }} .out/smoke
+      - name: validate pptx
+        run: python3 scripts/validate_pptx.py .out/smoke/smoke-${{ matrix.theme }}.pptx
+      - name: static layout check
+        run: python3 scripts/check_layout.py .out/smoke/smoke-${{ matrix.theme }}.manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ matrix.theme }}
+          path: .out/smoke/
+          retention-days: 7
+
+  shell:
+    name: shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: syntax check
+        run: bash -n scripts/doctor.sh scripts/render.sh
+      - name: shellcheck
+        run: shellcheck -S warning scripts/doctor.sh scripts/render.sh
+      - name: doctor runs
+        run: bash scripts/doctor.sh

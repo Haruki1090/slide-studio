@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# generated output (smoke tests, renders)
+.out/
+
+# python
+__pycache__/
+*.pyc
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# plumb run ledger (never tracked)
+.plumb/run/

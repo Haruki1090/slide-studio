@@ -1,0 +1,31 @@
+{
+  "name": "slide-studio",
+  "version": "0.1.0",
+  "description": "Claude Code skill: research-to-deck pipeline that produces pptx / pdf with quality gates (headline-as-conclusion, one message per slide, sources on every page).",
+  "private": true,
+  "license": "MIT",
+  "author": "Haruki Inoue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Haruki1090/slide-studio.git"
+  },
+  "homepage": "https://github.com/Haruki1090/slide-studio#readme",
+  "bugs": {
+    "url": "https://github.com/Haruki1090/slide-studio/issues"
+  },
+  "keywords": ["claude-code", "claude-skill", "pptx", "pptxgenjs", "slides", "presentation"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "doctor": "bash scripts/doctor.sh",
+    "smoke": "node evals/smoke.js default .out/smoke && python3 scripts/validate_pptx.py .out/smoke/smoke-default.pptx && python3 scripts/check_layout.py .out/smoke/smoke-default.manifest.json",
+    "smoke:all": "for t in default mono navy editorial; do node evals/smoke.js $t .out/smoke && python3 scripts/validate_pptx.py .out/smoke/smoke-$t.pptx && python3 scripts/check_layout.py .out/smoke/smoke-$t.manifest.json || exit 1; done",
+    "contrast": "python3 scripts/check_contrast.py assets/themes/*.json",
+    "render": "bash scripts/render.sh .out/smoke/smoke-default.pptx .out/smoke",
+    "test": "npm run contrast && npm run smoke:all"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

@@ -2,6 +2,8 @@
 """slide-studio / テーマの可読性検査。
 
     python3 scripts/check_contrast.py assets/themes/navy.json
+    python3 scripts/check_contrast.py out.manifest.json        # 生成後の実 palette
+    node scripts/brand_theme.js default 0055A4 > /tmp/b.json && python3 scripts/check_contrast.py /tmp/b.json
 
 利用者が指定した色を勝手に変えるのではなく、**使い方を変える**ための判定を出す。
 コントラスト比が足りない色は、面（塗り）ではなく線と文字に用途を限定する。
@@ -16,6 +18,9 @@ PAIRS = [
     ("textMuted", "paper", 3.0, "注記・フッタ"),
     ("inverse", "primary", 4.5, "主色の上に載る文字"),
     ("secondary", "secondaryPale", 4.5, "副色の淡色面に載る文字"),
+    ("coverText", "coverBg", 4.5, "表紙の題名"),
+    ("coverFaint", "coverBg", 3.0, "表紙の注記"),
+    ("secondary", "coverBg", 3.0, "表紙の eyebrow と罫"),
 ]
 
 

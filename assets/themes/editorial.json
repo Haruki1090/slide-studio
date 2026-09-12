@@ -47,9 +47,9 @@
     "margin": 0.55,
     "titleY": 0.26,
     "headY": 0.56,
-    "headH": 0.72,
-    "headRuleY": 1.34,
-    "bodyTop": 1.55,
+    "headH": 0.98,
+    "headRuleY": 1.6,
+    "bodyTop": 1.8,
     "bodyBottom": 6.7,
     "footRuleY": 6.88,
     "footY": 6.94,
@@ -62,7 +62,8 @@
     "titleUnderline": false,
     "secondaryMaxAreaRatio": 0.12,
     "headRuleStyle": "solid",
-    "footRuleStyle": "sysDot"
+    "footRuleStyle": "sysDot",
+    "secondaryMaxTouches": 1
   },
   "fontPolicy": "shipMeiryo"
 }

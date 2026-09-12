@@ -13,11 +13,11 @@
     "ruleFaint": "E1E7EC",
     "pale": "F1F4F7",
     "inverse": "FFFFFF",
-    "coverBg": "0E2A47",
-    "coverText": "FFFFFF",
-    "coverSub": "C9D6E2",
-    "coverFaint": "8FA3B5",
-    "coverRule": "345A7D"
+    "coverBg": "FFFFFF",
+    "coverText": "0E2A47",
+    "coverSub": "33465C",
+    "coverFaint": "6B7C8F",
+    "coverRule": "C3CDD7"
   },
   "type": {
     "jp": "Meiryo",
@@ -62,7 +62,8 @@
     "titleUnderline": false,
     "secondaryMaxAreaRatio": 0.12,
     "headRuleStyle": "solid",
-    "footRuleStyle": "sysDot"
+    "footRuleStyle": "sysDot",
+    "secondaryMaxTouches": 1
   },
   "fontPolicy": "shipMeiryo"
 }
